@@ -1,0 +1,796 @@
+// Translations object for multi-language support
+const translations = {
+  English: {
+    title: '🌍 Universal Unit Converter',
+    purpose: 'Convert everyday measurements like length, weight, temperature, and volume with ease. A mini project for my AI Native journey 🚀.',
+    selectType: 'Select Type:',
+    inputValue: 'Value to Convert:',
+    fromUnit: 'From Unit:',
+    toUnit: 'To Unit:',
+    convertButton: 'Convert',
+    explainUnitButton: 'Explain Unit ✨',
+    funFactButton: 'Fun Fact ✨',
+    loadingAI: 'AI is thinking...',
+    enterNumber: 'Please enter a valid number.',
+    selectUnits: 'Please select both "from" and "to" units.',
+    unknownType: 'Error: Unknown unit type',
+    invalidHeightFormat: "Invalid height format. Use 'X'Y\"' (e.g., 6'3\") or a number (e.g., 75 for inches).",
+    resultPrefix: '✨ ',
+    resultSuffix: ' ✨',
+    // Unit Type Translations
+    unitTypes: {
+      Length: 'Length',
+      Height: 'Height',
+      Weight: 'Weight',
+      Temperature: 'Temperature',
+      Volume: 'Volume',
+    },
+    // Unit Name Translations
+    units: {
+      Meters: 'Meters', Feet: 'Feet', Kilometers: 'Kilometers', Miles: 'Miles', Inches: 'Inches', Centimeters: 'Centimeters', Yards: 'Yards',
+      Pounds: 'Pounds', Kilograms: 'Kilograms', Ounces: 'Ounces', Grams: 'Grams', Stones: 'Stones',
+      Celsius: 'Celsius', Fahrenheit: 'Fahrenheit',
+      Liters: 'Liters', Gallons: 'Gallons', Milliliters: 'Milliliters', 'Fluid Ounces': 'Fluid Ounces', Cups: 'Cups',
+    },
+  },
+  French: {
+    title: '🌍 Convertisseur d\'Unités Universel',
+    purpose: 'Convertissez facilement les mesures courantes comme la longueur, le poids, la température et le volume. Un mini-projet pour mon parcours IA Native 🚀.',
+    selectType: 'Sélectionner le type:',
+    inputValue: 'Valeur à convertir:',
+    fromUnit: 'De l\'unité:',
+    toUnit: 'Vers l\'unité:',
+    convertButton: 'Convertir',
+    explainUnitButton: 'Expliquer l\'unité ✨',
+    funFactButton: 'Fait Amusant ✨',
+    loadingAI: 'L\'IA réfléchit...',
+    enterNumber: 'Veuillez entrer un nombre valide.',
+    selectUnits: 'Veuillez sélectionner les unités "de" et "vers".',
+    unknownType: 'Erreur: Type d\'unité inconnu',
+    invalidHeightFormat: "Format de hauteur invalide. Utilisez 'X'Y\"' (ex: 6'3\") ou un nombre (ex: 75 pour pouces).",
+    resultPrefix: '✨ ',
+    resultSuffix: ' ✨',
+    // Unit Type Translations
+    unitTypes: {
+      Length: 'Longueur',
+      Height: 'Hauteur',
+      Weight: 'Poids',
+      Temperature: 'Température',
+      Volume: 'Volume',
+    },
+    // Unit Name Translations
+    units: {
+      Meters: 'Mètres', Feet: 'Pieds', Kilometers: 'Kilomètres', Miles: 'Miles', Inches: 'Pouces', Centimeters: 'Centimètres', Yards: 'Verges',
+      Pounds: 'Livres', Kilograms: 'Kilogrammes', Ounces: 'Onces', Grams: 'Grammes', Stones: 'Stones',
+      Celsius: 'Celsius', Fahrenheit: 'Fahrenheit',
+      Liters: 'Litres', Gallons: 'Gallons', Millilitres: 'Millilitres', 'Fluid Ounces': 'Onces liquides', Cups: 'Tasses',
+    },
+  },
+  Italian: {
+    title: '🌍 Convertitore di Unità Universale',
+    purpose: 'Converti facilmente misurazioni comuni come lunghezza, peso, temperatura e volume. Un mini progetto per il mio percorso AI Native 🚀.',
+    selectType: 'Seleziona tipo:',
+    inputValue: 'Valore da convertire:',
+    fromUnit: 'Da unità:',
+    toUnit: 'A unità:',
+    convertButton: 'Converti',
+    explainUnitButton: 'Spiega Unità ✨',
+    funFactButton: 'Curiosità ✨',
+    loadingAI: 'L\'IA sta pensando...',
+    enterNumber: 'Inserisci un numero valido.',
+    selectUnits: 'Seleziona sia le unità "da" che "a".',
+    unknownType: 'Errore: Tipo di unità sconosciuto',
+    invalidHeightFormat: "Formato altezza non valido. Usa 'X'Y\"' (es: 6'3\") o un numero (es: 75 per pollici).",
+    resultPrefix: '✨ ',
+    resultSuffix: ' ✨',
+    // Unit Type Translations
+    unitTypes: {
+      Length: 'Lunghezza',
+      Height: 'Altezza',
+      Weight: 'Peso',
+      Temperature: 'Temperatura',
+      Volume: 'Volume',
+    },
+    // Unit Name Translations
+    units: {
+      Meters: 'Metri', Feet: 'Piedi', Kilometers: 'Chilometri', Miles: 'Miglia', Inches: 'Pollici', Centimeters: 'Centimetri', Yards: 'Iarde',
+      Pounds: 'Libbre', Kilograms: 'Chilogrammi', Ounces: 'Once', Grams: 'Grammi', Stones: 'Stone',
+      Celsius: 'Celsius', Fahrenheit: 'Fahrenheit',
+      Liters: 'Litri', Gallons: 'Galloni', Milliliters: 'Millilitri', 'Fluid Ounces': 'Once Liquide', Cups: 'Tazze',
+    },
+  },
+  German: {
+    title: '🌍 Universal-Einheitenumrechner',
+    purpose: 'Konvertieren Sie alltägliche Maße wie Länge, Gewicht, Temperatur und Volumen mit Leichtigkeit. Ein Mini-Projekt für meine KI-Native-Reise 🚀.',
+    selectType: 'Typ auswählen:',
+    inputValue: 'Wert umrechnen:',
+    fromUnit: 'Von Einheit:',
+    toUnit: 'Zu Einheit:',
+    convertButton: 'Konvertieren',
+    explainUnitButton: 'Einheit erklären ✨',
+    funFactButton: 'Interessante Tatsache ✨',
+    loadingAI: 'KI denkt nach...',
+    enterNumber: 'Bitte geben Sie eine gültige Zahl ein.',
+    selectUnits: 'Bitte wählen Sie sowohl "Von" als auch "Zu" Einheiten aus.',
+    unknownType: 'Fehler: Unbekannter Einheitentyp',
+    invalidHeightFormat: "Ungültiges Höhenformat. Verwenden Sie 'X'Y\"' (z.B. 6'3\") oder eine Zahl (z.B. 75 für Zoll).",
+    resultPrefix: '✨ ',
+    resultSuffix: ' ✨',
+    // Unit Type Translations
+    unitTypes: {
+      Length: 'Länge',
+      Height: 'Höhe',
+      Weight: 'Gewicht',
+      Temperature: 'Temperatur',
+      Volume: 'Volumen',
+    },
+    // Unit Name Translations
+    units: {
+      Meters: 'Meter', Feet: 'Fuß', Kilometers: 'Kilometer', Miles: 'Meilen', Inches: 'Zoll', Centimeters: 'Zentimeter', Yards: 'Yard',
+      Pounds: 'Pfund', Kilograms: 'Kilogramm', Ounces: 'Unzen', Grams: 'Gramm', Stones: 'Stones',
+      Celsius: 'Celsius', Fahrenheit: 'Fahrenheit',
+      Liters: 'Liter', Gallons: 'Gallonen', Milliliters: 'Milliliter', 'Fluid Ounces': 'Flüssigunzen', Cups: 'Tassen',
+    },
+  },
+  Chinese: {
+    title: '🌍 通用单位转换器',
+    purpose: '轻松转换长度、重量、温度和体积等日常测量单位。我的AI原生之旅的迷你项目 🚀。',
+    selectType: '选择类型:',
+    inputValue: '要转换的值:',
+    fromUnit: '从单位:',
+    toUnit: '到单位:',
+    convertButton: '转换',
+    explainUnitButton: '解释单位 ✨',
+    funFactButton: '趣味事实 ✨',
+    loadingAI: 'AI 正在思考...',
+    enterNumber: '请输入一个有效的数字。',
+    selectUnits: '请选择“从”单位和“到”单位。',
+    unknownType: '错误: 未知的单位类型',
+    invalidHeightFormat: "身高格式无效。使用“X'Y\"”（例如 6'3\"）或数字（例如 75 表示英寸）。",
+    resultPrefix: '✨ ',
+    resultSuffix: ' ✨',
+    // Unit Type Translations
+    unitTypes: {
+      Length: '长度',
+      Height: '高度',
+      Weight: '重量',
+      Temperature: '温度',
+      Volume: '体积',
+    },
+    // Unit Name Translations
+    units: {
+      Meters: '米', Feet: '英尺', Kilometers: '公里', Miles: '英里', Inches: '英寸', Centimeters: '厘米', Yards: '码',
+      Pounds: '磅', Kilograms: '公斤', Ounces: '盎司', Grams: '克', Stones: '英石',
+      Celsius: '摄氏度', Fahrenheit: '华氏度',
+      Liters: '升', Gallons: '加仑', Milliliters: '毫升', 'Fluid Ounces': '液量盎司', Cups: '杯',
+    },
+  },
+  Spanish: {
+    title: '🌍 Convertidor de Unidades Universal',
+    purpose: 'Convierta fácilmente medidas cotidianas como longitud, peso, temperatura y volumen. Un mini proyecto para mi viaje nativo de IA 🚀.',
+    selectType: 'Seleccionar tipo:',
+    inputValue: 'Valor a convertir:',
+    fromUnit: 'De unidad:',
+    toUnit: 'A unidad:',
+    convertButton: 'Convertir',
+    explainUnitButton: 'Explicar unidad ✨',
+    funFactButton: 'Dato curioso ✨',
+    loadingAI: 'La IA está pensando...',
+    enterNumber: 'Por favor, introduce un número válido.',
+    selectUnits: 'Por favor, selecciona ambas unidades "de" y "a".',
+    unknownType: 'Error: Tipo de unidad desconocido',
+    invalidHeightFormat: "Formato de altura no válido. Usa 'X'Y\"' (ej: 6'3\") o un número (ej: 75 para pulgadas).",
+    resultPrefix: '✨ ',
+    resultSuffix: ' ✨',
+    // Unit Type Translations
+    unitTypes: {
+      Length: 'Longitud',
+      Height: 'Altura',
+      Weight: 'Peso',
+      Temperature: 'Temperatura',
+      Volume: 'Volumen',
+    },
+    // Unit Name Translations
+    units: {
+      Meters: 'Metros', Feet: 'Pies', Kilometers: 'Kilómetros', Miles: 'Millas', Inches: 'Pulgadas', Centimeters: 'Centímetros', Yards: 'Yardas',
+      Pounds: 'Libras', Kilograms: 'Kilogramos', Ounces: 'Onzas', Grams: 'Gramos', Stones: 'Stones',
+      Celsius: 'Celsius', Fahrenheit: 'Fahrenheit',
+      Liters: 'Litros', Gallons: 'Galones', Millilitros: 'Mililitros', 'Fluid Ounces': 'Onzas líquidas', Cups: 'Tazas',
+    },
+  },
+  Portuguese: {
+    title: '🌍 Conversor de Unidades Universal',
+    purpose: 'Converta facilmente medidas diárias como comprimento, peso, temperatura e volume. Um mini projeto para minha jornada AI Native 🚀.',
+    selectType: 'Selecionar Tipo:',
+    inputValue: 'Valor para converter:',
+    fromUnit: 'Da Unidade:',
+    toUnit: 'Para Unidade:',
+    convertButton: 'Converter',
+    explainUnitButton: 'Explicar Unidade ✨',
+    funFactButton: 'Curiosidade ✨',
+    loadingAI: 'A IA está pensando...',
+    enterNumber: 'Por favor, insira um número válido.',
+    selectUnits: 'Por favor, selecione as unidades "de" e "para".',
+    unknownType: 'Erro: Tipo de unidade desconhecido',
+    invalidHeightFormat: "Formato de altura inválido. Use 'X'Y\"' (ex: 6'3\") ou um número (ex: 75 para polegadas).",
+    resultPrefix: '✨ ',
+    resultSuffix: ' ✨',
+    // Unit Type Translations
+    unitTypes: {
+      Length: 'Comprimento',
+      Height: 'Altura',
+      Weight: 'Peso',
+      Temperature: 'Temperatura',
+      Volume: 'Volume',
+    },
+    // Unit Name Translations
+    units: {
+      Meters: 'Metros', Feet: 'Pés', Kilometers: 'Quilômetros', Miles: 'Milhas', Inches: 'Polegadas', Centimeters: 'Centímetros', Yards: 'Jardas',
+      Pounds: 'Libras', Kilograms: 'Quilogramas', Ounces: 'Onças', Grams: 'Gramas', Stones: 'Stones',
+      Celsius: 'Celsius', Fahrenheit: 'Fahrenheit',
+      Liters: 'Liters', Gallons: 'Galões', Milliliters: 'Mililitros', 'Fluid Ounces': 'Onças Líquidas', Cups: 'Copos',
+    },
+  },
+};
+
+
+// Main App Component for the Universal Unit Converter
+function App() {
+  // State variables to manage the application's data and UI
+  const [inputValue, setInputValue] = useState(''); // Stores the numerical value entered by the user
+  const [selectedUnitType, setSelectedUnitType] = useState('Length'); // Stores the currently selected category (e.g., Length, Weight)
+  const [fromUnit, setFromUnit] = useState(''); // Stores the unit to convert from
+  const [toUnit, setToUnit] = useState(''); // Stores the unit to convert to
+  const [result, setResult] = useState(''); // Stores the conversion result
+  const [selectedLanguage, setSelectedLanguage] = useState('English'); // Stores the currently selected language
+
+  // New states for LLM features
+  const [llmExplanation, setLlmExplanation] = useState(''); // Stores explanation from LLM
+  const [llmFunFact, setLlmFunFact] = useState(''); // Stores fun fact from LLM
+  const [isLoadingLLM, setIsLoadingLLM] = useState(false); // Indicates if an LLM call is in progress
+
+  // Get current translations based on selectedLanguage
+  const t = translations[selectedLanguage];
+
+  // Define the available unit types and their respective units and initial default selections
+  const unitCategories = {
+    Length: {
+      units: ['Meters', 'Feet', 'Kilometers', 'Miles', 'Inches', 'Centimeters', 'Yards'], // Added Yards
+      emojis: ' ',
+      defaultFrom: 'Meters',
+      defaultTo: 'Feet',
+    },
+    Height: { // New Height category
+      units: ['Meters', 'Feet', 'Inches', 'Centimeters'], // Units relevant for height
+      emojis: '⬆️', // Up arrow emoji for height
+      defaultFrom: 'Feet',
+      defaultTo: 'Meters',
+    },
+    Weight: {
+      units: ['Pounds', 'Kilograms', 'Ounces', 'Grams', 'Stones'],
+      emojis: '⚖️',
+      defaultFrom: 'Pounds',
+      defaultTo: 'Kilograms',
+    },
+    Temperature: {
+      units: ['Celsius', 'Fahrenheit'],
+      emojis: '🌡️',
+      defaultFrom: 'Celsius',
+      defaultTo: 'Fahrenheit',
+    },
+    Volume: {
+      units: ['Liters', 'Gallons', 'Milliliters', 'Fluid Ounces', 'Cups'],
+      emojis: '🧪',
+      defaultFrom: 'Liters',
+      defaultTo: 'Gallons',
+    },
+  };
+
+  // useEffect hook to update 'fromUnit' and 'toUnit' when 'selectedUnitType' changes.
+  // This ensures that the dropdowns always show valid units for the current category.
+  useEffect(() => {
+    const currentCategory = unitCategories[selectedUnitType];
+    if (currentCategory) {
+      setFromUnit(currentCategory.defaultFrom);
+      setToUnit(currentCategory.defaultTo);
+      setResult(''); // Clear result when unit type changes
+      setLlmExplanation(''); // Clear LLM explanations
+      setLlmFunFact(''); // Clear LLM fun facts
+    }
+  }, [selectedUnitType, selectedLanguage]); // Added selectedLanguage as dependency
+
+  // Function to parse height input string (e.g., "6'3\"", "72") into total inches
+  const parseHeightInput = (inputString, fromUnit) => {
+    inputString = inputString.trim();
+
+    // Regex for X'Y" or X' (feet and optional inches)
+    const feetInchesMatch = inputString.match(/^(\d+)'(\d*)"?$/);
+    if (feetInchesMatch) {
+      const feet = parseInt(feetInchesMatch[1] || '0', 10);
+      const inches = parseInt(feetInchesMatch[2] || '0', 10);
+      return (feet * 12) + inches; // Total inches
+    }
+
+    // Regex for X" (pure inches with quote)
+    const pureInchesMatch = inputString.match(/^(\d+)"$/);
+    if (pureInchesMatch) {
+      return parseInt(pureInchesMatch[1], 10); // Total inches
+    }
+
+    // Attempt to parse as a number (e.g., "72", "6")
+    const num = parseFloat(inputString);
+    if (!isNaN(num)) {
+      if (fromUnit === 'Feet') {
+        return num * 12; // Convert feet to inches
+      } else if (fromUnit === 'Inches') {
+        return num; // Already in inches
+      }
+      // If it's a number and not feet/inches, it could be meters/centimeters, which will be handled later
+      return num; // Return as is for now, `convertLength` will handle unit conversion
+    }
+
+    return NaN; // Invalid format
+  };
+
+  // Function to format a total value in meters into feet and inches (X'Y") or inches (X")
+  const formatHeightOutput = (totalValueInMeters, toUnit) => {
+    if (toUnit === 'Feet' || toUnit === 'Inches') {
+      const totalInches = convertLength(totalValueInMeters, 'Meters', 'Inches');
+      const feet = Math.floor(totalInches / 12);
+      const remainingInches = totalInches % 12;
+      const roundedRemainingInches = parseFloat(remainingInches.toFixed(2)); // Round inches to 2 decimal places
+
+      if (toUnit === 'Feet') {
+        // If remainingInches is very close to 12, round up to next foot
+        if (roundedRemainingInches >= 11.99) { // Accounts for floating point inaccuracies
+          return `${feet + 1}'0"`;
+        }
+        return `${feet}'${roundedRemainingInches}"`;
+      } else if (toUnit === 'Inches') {
+        return `${totalInches.toFixed(2)}"`;
+      }
+    }
+    // Fallback if toUnit is not Feet/Inches (e.g., Meters, Centimeters for Height)
+    return totalValueInMeters.toFixed(4);
+  };
+
+  // Function to handle the conversion logic
+  const handleConversion = () => {
+    let numValue;
+    let originalInputValue = inputValue; // Store original input for result display
+
+    setLlmFunFact(''); // Clear previous fun fact on new conversion
+
+    // Special handling for Height unit type with Feet/Inches input
+    if (selectedUnitType === 'Height' && (fromUnit === 'Feet' || fromUnit === 'Inches')) {
+      numValue = parseHeightInput(inputValue, fromUnit);
+      if (isNaN(numValue)) {
+        setResult(t.invalidHeightFormat);
+        return;
+      }
+      // Convert parsed inches value to the base unit (Meters) for convertLength
+      if (fromUnit === 'Feet' || fromUnit === 'Inches') {
+          // numValue is now total inches. Convert this to Meters for calculation.
+          numValue = convertLength(numValue, 'Inches', 'Meters');
+      }
+    } else {
+      numValue = parseFloat(inputValue);
+      if (isNaN(numValue)) {
+        setResult(t.enterNumber);
+        return;
+      }
+    }
+
+    if (!fromUnit || !toUnit) {
+      setResult(t.selectUnits);
+      return;
+    }
+
+    let convertedValue;
+
+    // Conversion logic based on the selected unit type
+    switch (selectedUnitType) {
+      case 'Length':
+      case 'Height':
+        // For Height, numValue is already in Meters if it was Feet/Inches input
+        // If fromUnit was Meters/Centimeters, numValue is directly the parseFloat result
+        convertedValue = convertLength(numValue, (selectedUnitType === 'Height' && (fromUnit === 'Feet' || fromUnit === 'Inches')) ? 'Meters' : fromUnit, toUnit);
+        break;
+      case 'Weight':
+        convertedValue = convertWeight(numValue, fromUnit, toUnit);
+        break;
+      case 'Temperature':
+        convertedValue = convertTemperature(numValue, fromUnit, toUnit);
+        break;
+      case 'Volume':
+        convertedValue = convertVolume(numValue, fromUnit, toUnit);
+        break;
+      default:
+        convertedValue = t.unknownType;
+    }
+
+    // Display the result
+    if (typeof convertedValue === 'number') {
+      let formattedResult;
+      if (selectedUnitType === 'Height' && (toUnit === 'Feet' || toUnit === 'Inches')) {
+        // Pass the converted value (still in meters) to formatHeightOutput
+        formattedResult = formatHeightOutput(convertedValue, toUnit);
+      } else {
+        formattedResult = convertedValue.toFixed(4); // Apply 4 decimal places for other conversions
+      }
+      setResult(`${originalInputValue} ${t.units[fromUnit]} = ${formattedResult} ${t.units[toUnit]}`);
+    } else {
+      setResult(convertedValue); // Error message from conversion functions
+    }
+  };
+
+  // Function to fetch explanation of a unit from LLM
+  const fetchLLMExplanation = async () => {
+    if (!fromUnit) {
+      setLlmExplanation('Please select a "From Unit" to explain.');
+      return;
+    }
+    setIsLoadingLLM(true);
+    setLlmExplanation(t.loadingAI); // Show loading message
+
+    try {
+      const prompt = `Provide a brief, concise explanation of the unit "${fromUnit}" in ${selectedLanguage} language. Focus on its definition and common usage.`;
+      let chatHistory = [];
+      chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+      const payload = { contents: chatHistory };
+      const apiKey = "" // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+      
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json(); // Await the JSON parsing
+
+      if (result.candidates && result.candidates.length > 0 &&
+          result.candidates[0].content && result.candidates[0].content.parts &&
+          result.candidates[0].content.parts.length > 0) {
+        const text = result.candidates[0].content.parts[0].text;
+        setLlmExplanation(text);
+      } else {
+        setLlmExplanation('Could not get an explanation. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error fetching LLM explanation:', error);
+      setLlmExplanation('Failed to fetch explanation. Network error or API issue.');
+    } finally {
+      setIsLoadingLLM(false);
+    }
+  };
+
+  // Function to fetch a fun fact from LLM based on conversion
+  const fetchLLMFunFact = async () => {
+    if (!result || result.includes('Please')) { // Check if a valid conversion result exists
+      setLlmFunFact('Perform a conversion first to get a fun fact!');
+      return;
+    }
+    setIsLoadingLLM(true);
+    setLlmFunFact(t.loadingAI); // Show loading message
+
+    try {
+      const prompt = `Provide a short, interesting fun fact or historical trivia related to the conversion between ${fromUnit} and ${toUnit}, or about these units in general, in ${selectedLanguage} language.`;
+      let chatHistory = [];
+      chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+      const payload = { contents: chatHistory };
+      const apiKey = "" // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
+      const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+      
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json(); // Await the JSON parsing
+
+      if (result.candidates && result.candidates.length > 0 &&
+          result.candidates[0].content && result.candidates[0].content.parts &&
+          result.candidates[0].content.parts.length > 0) {
+        const text = result.candidates[0].content.parts[0].text;
+        setLlmFunFact(text);
+      } else {
+        setLlmFunFact('Could not get a fun fact. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error fetching LLM fun fact:', error);
+      setLlmFunFact('Failed to fetch fun fact. Network error or API issue.');
+    } finally {
+      setIsLoadingLLM(false);
+    }
+  };
+
+  // Helper function for Length conversions (all conversions go through Meters as an intermediate)
+  const convertLength = (value, from, to) => {
+    const toMeters = {
+      Meters: (v) => v,
+      Feet: (v) => v * 0.3048,
+      Kilometers: (v) => v * 1000,
+      Miles: (v) => v * 1609.34,
+      Inches: (v) => v * 0.0254,
+      Centimeters: (v) => v * 0.01,
+      Yards: (v) => v * 0.9144,
+    };
+
+    const fromMeters = {
+      Meters: (v) => v,
+      Feet: (v) => v / 0.3048,
+      Kilometers: (v) => v / 1000,
+      Miles: (v) => v / 1609.34,
+      Inches: (v) => v / 0.0254,
+      Centimeters: (v) => v / 0.01,
+      Yards: (v) => v / 0.9144,
+    };
+
+    // Ensure value is converted to meters first
+    let valueInMeters;
+    if (toMeters[from]) {
+        valueInMeters = toMeters[from](value);
+    } else {
+        // Handle cases where 'from' unit might be raw numerical input from height
+        // and needs to be treated as meters already
+        valueInMeters = value;
+    }
+
+    if (fromMeters[to]) {
+        return fromMeters[to](valueInMeters);
+    } else {
+        return 'Error: Invalid target unit for length conversion.';
+    }
+  };
+
+  // Helper function for Weight conversions (all conversions go through Kilograms as an intermediate)
+  const convertWeight = (value, from, to) => {
+    const toKilograms = {
+      Pounds: (v) => v * 0.453592,
+      Kilograms: (v) => v,
+      Ounces: (v) => v * 0.0283495,
+      Grams: (v) => v * 0.001,
+      Stones: (v) => v * 6.35029,
+    };
+
+    const fromKilograms = {
+      Pounds: (v) => v / 0.453592,
+      Kilograms: (v) => v,
+      Ounces: (v) => v / 0.0283495,
+      Grams: (v) => v / 0.001,
+      Stones: (v) => v / 6.35029,
+    };
+
+    const valueInKilograms = toKilograms[from](value);
+    return fromKilograms[to](valueInKilograms);
+  };
+
+  // Helper function for Temperature conversions (Celsius ↔ Fahrenheit)
+  const convertTemperature = (value, from, to) => {
+    if (from === 'Celsius' && to === 'Fahrenheit') {
+      return (value * 9) / 5 + 32;
+    } else if (from === 'Fahrenheit' && to === 'Celsius') {
+      return ((value - 32) * 5) / 9;
+    }
+    return value; // Should not happen if logic correctly prevents fromUnit === toUnit or invalid units
+  };
+
+  // Helper function for Volume conversions (all conversions go through Liters as an intermediate)
+  const convertVolume = (value, from, to) => {
+    const toLiters = {
+      Liters: (v) => v,
+      Gallons: (v) => v * 3.78541,
+      Milliliters: (v) => v * 0.001,
+      'Fluid Ounces': (v) => v * 0.0295735,
+      Cups: (v) => v * 0.236588,
+    };
+
+    const fromLiters = {
+      Liters: (v) => v,
+      Gallons: (v) => v / 3.78541,
+      Milliliters: (v) => v / 0.001,
+      'Fluid Ounces': (v) => v / 0.0295735,
+      Cups: (v) => v / 0.236588,
+    };
+
+    const valueInLiters = toLiters[from](value);
+    return fromLiters[to](valueInLiters);
+  };
+
+  return (
+    // Main container with gradient background and responsive padding
+    <div className="min-h-screen bg-gradient-to-br from-blue-300 via-purple-300 to-pink-300 flex items-center justify-center p-4 sm:p-6 md:p-8 font-inter">
+      {/* Conversion Card - central container for the UI */}
+      {/* Changed max-w-5xl to max-w-7xl and added lg:p-10 for more padding on large screens */}
+      <div className="bg-white p-6 sm:p-8 lg:p-10 rounded-3xl shadow-xl max-w-7xl w-full flex flex-col gap-6 transform transition-all duration-300 ease-in-out hover:scale-[1.005]">
+        {/* Language Selection */}
+        <div className="flex justify-end mb-4">
+          <div className="relative">
+            <select
+              id="language-select"
+              className="appearance-none block bg-white border border-gray-300 rounded-lg py-2 px-4 pr-8 text-gray-800 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 cursor-pointer text-sm sm:text-base shadow-sm"
+              value={selectedLanguage}
+              onChange={(e) => setSelectedLanguage(e.target.value)}
+            >
+              {Object.keys(translations).map((lang) => (
+                <option key={lang} value={lang}>
+                  {lang}
+                </option>
+              ))}
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 6.071 6.9l-1.414 1.414L9.293 12.95z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        {/* Title and Project Purpose */}
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-800 text-center mb-2 leading-tight">
+          {t.title}
+        </h1>
+        {/* Increased text size from text-lg sm:text-xl to text-xl sm:text-2xl */}
+        <p className="text-gray-600 text-center text-xl sm:text-2xl">
+          {t.purpose}
+        </p>
+
+        {/* Unit Type Selection */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 border-b pb-4 mb-4">
+          <label htmlFor="unit-type" className="text-lg font-semibold text-gray-700">
+            {t.selectType}
+          </label>
+          <div className="relative w-full sm:w-auto">
+            <select
+              id="unit-type"
+              className="appearance-none block w-full bg-white border border-gray-300 rounded-lg py-2 px-4 pr-8 text-gray-800 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 cursor-pointer text-base sm:text-lg shadow-sm"
+              value={selectedUnitType}
+              onChange={(e) => setSelectedUnitType(e.target.value)}
+            >
+              {Object.keys(unitCategories).map((type) => (
+                <option key={type} value={type}>
+                  {unitCategories[type].emojis} {t.unitTypes[type]} {/* Translated unit type name */}
+                </option>
+              ))}
+            </select>
+            {/* Custom dropdown arrow */}
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 6.071 6.9l-1.414 1.414L9.293 12.95z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        {/* Input Value Field */}
+        <div>
+          <label htmlFor="input-value" className="block text-lg font-semibold text-gray-700 mb-2">
+            {t.inputValue}
+          </label>
+          <input
+            id="input-value"
+            type={selectedUnitType === 'Height' && (fromUnit === 'Feet' || fromUnit === 'Inches') ? 'text' : 'number'}
+            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 text-lg shadow-sm"
+            placeholder={selectedUnitType === 'Height' && (fromUnit === 'Feet' || fromUnit === 'Inches') ? "e.g., 6'3\" or 75" : "Enter value"}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            min="0" // Only applies to type="number"
+          />
+        </div>
+
+        {/* From and To Unit Selection */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          {/* From Unit Dropdown */}
+          <div className="flex-1">
+            <label htmlFor="from-unit" className="block text-lg font-semibold text-gray-700 mb-2">
+              {t.fromUnit}
+            </label>
+            <div className="relative">
+              <select
+                id="from-unit"
+                className="appearance-none block w-full bg-white border border-gray-300 rounded-lg py-3 px-4 pr-8 text-gray-800 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 cursor-pointer text-base sm:text-lg shadow-sm"
+                value={fromUnit}
+                onChange={(e) => setFromUnit(e.target.value)}
+              >
+                {unitCategories[selectedUnitType]?.units.map((unit) => (
+                  <option key={unit} value={unit}>
+                    {t.units[unit]} {/* Translated unit name */}
+                  </option>
+                ))}
+              </select>
+              {/* Custom dropdown arrow */}
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 6.071 6.9l-1.414 1.414L9.293 12.95z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          {/* To Unit Dropdown */}
+          <div className="flex-1">
+            <label htmlFor="to-unit" className="block text-lg font-semibold text-gray-700 mb-2">
+              {t.toUnit}
+            </label>
+            <div className="relative">
+              <select
+                id="to-unit"
+                className="appearance-none block w-full bg-white border border-gray-300 rounded-lg py-3 px-4 pr-8 text-gray-800 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 cursor-pointer text-base sm:text-lg shadow-sm"
+                value={toUnit}
+                onChange={(e) => setToUnit(e.target.value)}
+              >
+                {unitCategories[selectedUnitType]?.units.map((unit) => (
+                  <option key={unit} value={unit}>
+                    {t.units[unit]} {/* Translated unit name */}
+                  </option>
+                ))}
+              </select>
+              {/* Custom dropdown arrow */}
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                  <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 6.071 6.9l-1.414 1.414L9.293 12.95z" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Convert Button */}
+        <button
+          onClick={handleConversion}
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-md hover:shadow-lg transform transition-all duration-300 ease-in-out active:scale-95"
+        >
+          {t.convertButton}
+        </button>
+
+        {/* LLM Feature Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4">
+          <button
+            onClick={fetchLLMExplanation}
+            disabled={isLoadingLLM || !fromUnit} // Disable if loading or no fromUnit selected
+            className="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 shadow-md hover:shadow-lg transform transition-all duration-300 ease-in-out active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLoadingLLM ? t.loadingAI : t.explainUnitButton}
+          </button>
+          <button
+            onClick={fetchLLMFunFact}
+            disabled={isLoadingLLM || !result || result.includes('Please')} // Disable if loading or no valid result
+            className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 shadow-md hover:shadow-lg transform transition-all duration-300 ease-in-out active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isLoadingLLM ? t.loadingAI : t.funFactButton}
+          </button>
+        </div>
+
+
+        {/* Result Display */}
+        {result && (
+          <div className="mt-4 p-4 bg-gray-100 rounded-lg text-center text-xl sm:text-2xl font-bold text-gray-800 shadow-inner break-words">
+            <p className="flex items-center justify-center gap-2">
+              {t.resultPrefix} <span className="text-blue-600">{result}</span> {t.resultSuffix}
+            </p>
+          </div>
+        )}
+
+        {/* LLM Explanation Display */}
+        {llmExplanation && (
+          <div className="mt-4 p-4 bg-yellow-50 rounded-lg text-center text-base sm:text-lg text-gray-700 shadow-inner break-words border border-yellow-200">
+            <h3 className="font-semibold mb-2 text-yellow-800">Unit Explanation:</h3>
+            <p>{llmExplanation}</p>
+          </div>
+        )}
+
+        {/* LLM Fun Fact Display */}
+        {llmFunFact && (
+          <div className="mt-4 p-4 bg-teal-50 rounded-lg text-center text-base sm:text-lg text-gray-700 shadow-inner break-words border border-teal-200">
+            <h3 className="font-semibold mb-2 text-teal-800">Fun Fact:</h3>
+            <p>{llmFunFact}</p>
+          </div>
+        )}
+      </div>
+      {/* Google Fonts for 'Inter' */}
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+      {/* Tailwind CSS CDN */}
+      <script src="https://cdn.tailwindcss.com"></script>
+    </div>
+  );
+}
