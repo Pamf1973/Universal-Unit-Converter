@@ -26,7 +26,9 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <script type="text/babel">
-   "https://universal-unit-converter-50.onrender.com"
+        // IMPORTANT: Replace this with the actual URL of your deployed Python Flask backend on Render!
+        // Example: const BACKEND_URL = "https://your-unit-converter-backend.onrender.com";
+        const BACKEND_URL = "https://universal-unit-converter-50.onrender.com";
 
 
         // Translations object for multi-language support
@@ -356,6 +358,9 @@
             fetchHistory();
           }, []); // Empty dependency array means this runs once on mount
 
+          // Removed local conversion helper functions as they will now be handled by the backend
+          // parse_height_input, format_height_output, convert_length, convert_weight, convert_temperature, convert_volume are now in Python backend.
+
 
           // Function to handle the conversion logic - NOW USES BACKEND
           const handleConversion = async () => {
@@ -539,7 +544,7 @@
                   </label>
                   <input
                     id="input-value"
-                    type="text"
+                    type="text" // Type can be text as backend will handle parsing
                     className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 text-lg shadow-sm"
                     placeholder={selectedUnitType === 'Height' && (fromUnit === 'Feet' || fromUnit === 'Inches') ? "e.g., 6'3\" or 75" : "Enter value"}
                     value={inputValue}
