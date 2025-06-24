@@ -161,7 +161,7 @@
             },
           },
           Chinese: {
-            title: '🌍 通用单位转换器',
+            title: '� 通用单位转换器',
             purpose: '轻松转换长度、重量、温度和体积等日常测量单位。我的AI原生之旅的迷你项目 🚀。',
             selectType: '选择类型:',
             inputValue: '要转换的值:',
@@ -264,33 +264,30 @@
 
         // Main App Component for the Universal Unit Converter
         function App() {
-          // State variables to manage the application's data and UI
-          const [inputValue, setInputValue] = useState(''); // Stores the numerical value entered by the user
-          const [selectedUnitType, setSelectedUnitType] = useState('Length'); // Stores the currently selected category (e.g., Length, Weight)
-          const [fromUnit, setFromUnit] = useState(''); // Stores the unit to convert from
-          const [toUnit, setToUnit] = useState(''); // Stores the unit to convert to
-          const [result, setResult] = useState(''); // Stores the conversion result
-          const [selectedLanguage, setSelectedLanguage] = useState('English'); // Stores the currently selected language
+          // Changed useState to React.useState and useEffect to React.useEffect
+          const [inputValue, setInputValue] = React.useState('');
+          const [selectedUnitType, setSelectedUnitType] = React.useState('Length');
+          const [fromUnit, setFromUnit] = React.useState('');
+          const [toUnit, setToUnit] = React.useState('');
+          const [result, setResult] = React.useState('');
+          const [selectedLanguage, setSelectedLanguage] = React.useState('English');
 
-          // New states for LLM features
-          const [llmExplanation, setLlmExplanation] = useState(''); // Stores explanation from LLM
-          const [llmFunFact, setLlmFunFact] = useState(''); // Stores fun fact from LLM
-          const [isLoadingLLM, setIsLoadingLLM] = useState(false); // Indicates if an LLM call is in progress
+          const [llmExplanation, setLlmExplanation] = React.useState('');
+          const [llmFunFact, setLlmFunFact] = React.useState('');
+          const [isLoadingLLM, setIsLoadingLLM] = React.useState(false);
 
-          // Get current translations based on selectedLanguage
           const t = translations[selectedLanguage];
 
-          // Define the available unit types and their respective units and initial default selections
           const unitCategories = {
             Length: {
-              units: ['Meters', 'Feet', 'Kilometers', 'Miles', 'Inches', 'Centimeters', 'Yards'], // Added Yards
+              units: ['Meters', 'Feet', 'Kilometers', 'Miles', 'Inches', 'Centimeters', 'Yards'],
               emojis: '📏',
               defaultFrom: 'Meters',
               defaultTo: 'Feet',
             },
-            Height: { // New Height category
-              units: ['Meters', 'Feet', 'Inches', 'Centimeters'], // Units relevant for height
-              emojis: '⬆️', // Up arrow emoji for height
+            Height: {
+              units: ['Meters', 'Feet', 'Inches', 'Centimeters'],
+              emojis: '⬆️',
               defaultFrom: 'Feet',
               defaultTo: 'Meters',
             },
@@ -314,63 +311,50 @@
             },
           };
 
-          // useEffect hook to update 'fromUnit' and 'toUnit' when 'selectedUnitType' changes.
-          // This ensures that the dropdowns always show valid units for the current category.
-          useEffect(() => {
+          React.useEffect(() => { // Changed useEffect to React.useEffect
             const currentCategory = unitCategories[selectedUnitType];
             if (currentCategory) {
               setFromUnit(currentCategory.defaultFrom);
               setToUnit(currentCategory.defaultTo);
-              setResult(''); // Clear result when unit type changes
-              setLlmExplanation(''); // Clear LLM explanations
-              setLlmFunFact(''); // Clear LLM fun facts
+              setResult('');
+              setLlmExplanation('');
+              setLlmFunFact('');
             }
-          }, [selectedUnitType, selectedLanguage]); // Added selectedLanguage as dependency
+          }, [selectedUnitType, selectedLanguage]);
 
-          // Function to parse height input string (e.g., "6'3\"", "72") into total inches
           const parseHeightInput = (inputString, fromUnit) => {
             inputString = inputString.trim();
-
-            // Regex for X'Y" or X' (feet and optional inches)
             const feetInchesMatch = inputString.match(/^(\d+)'(\d*)"?$/);
             if (feetInchesMatch) {
               const feet = parseInt(feetInchesMatch[1] || '0', 10);
               const inches = parseInt(feetInchesMatch[2] || '0', 10);
-              return (feet * 12) + inches; // Total inches
+              return (feet * 12) + inches;
             }
-
-            // Regex for X" (pure inches with quote)
             const pureInchesMatch = inputString.match(/^(\d+)"$/);
             if (pureInchesMatch) {
-              return parseInt(pureInchesMatch[1], 10); // Total inches
+              return parseInt(pureInchesMatch[1], 10);
             }
-
-            // Attempt to parse as a number (e.g., "72", "6")
             const num = parseFloat(inputString);
             if (!isNaN(num)) {
               if (fromUnit === 'Feet') {
-                return num * 12; // Convert feet to inches
+                return num * 12;
               } else if (fromUnit === 'Inches') {
-                return num; // Already in inches
+                return num;
               }
-              // If it's a number and not feet/inches, it could be meters/centimeters, which will be handled later
-              return num; // Return as is for now, `convertLength` will handle unit conversion
+              return num;
             }
-
-            return NaN; // Invalid format
+            return NaN;
           };
 
-          // Function to format a total value in meters into feet and inches (X'Y") or inches (X")
           const formatHeightOutput = (totalValueInMeters, toUnit) => {
             if (toUnit === 'Feet' || toUnit === 'Inches') {
               const totalInches = convertLength(totalValueInMeters, 'Meters', 'Inches');
               const feet = Math.floor(totalInches / 12);
               const remainingInches = totalInches % 12;
-              const roundedRemainingInches = parseFloat(remainingInches.toFixed(2)); // Round inches to 2 decimal places
+              const roundedRemainingInches = parseFloat(remainingInches.toFixed(2));
 
               if (toUnit === 'Feet') {
-                // If remainingInches is very close to 12, round up to next foot
-                if (roundedRemainingInches >= 11.99) { // Accounts for floating point inaccuracies
+                if (roundedRemainingInches >= 11.99) {
                   return `${feet + 1}'0"`;
                 }
                 return `${feet}'${roundedRemainingInches}"`;
@@ -378,27 +362,22 @@
                 return `${totalInches.toFixed(2)}"`;
               }
             }
-            // Fallback if toUnit is not Feet/Inches (e.g., Meters, Centimeters for Height)
             return totalValueInMeters.toFixed(4);
           };
 
-          // Function to handle the conversion logic
           const handleConversion = () => {
             let numValue;
-            let originalInputValue = inputValue; // Store original input for result display
+            let originalInputValue = inputValue;
 
-            setLlmFunFact(''); // Clear previous fun fact on new conversion
+            setLlmFunFact('');
 
-            // Special handling for Height unit type with Feet/Inches input
             if (selectedUnitType === 'Height' && (fromUnit === 'Feet' || fromUnit === 'Inches')) {
               numValue = parseHeightInput(inputValue, fromUnit);
               if (isNaN(numValue)) {
                 setResult(t.invalidHeightFormat);
                 return;
               }
-              // Convert parsed inches value to the base unit (Meters) for convertLength
               if (fromUnit === 'Feet' || fromUnit === 'Inches') {
-                  // numValue is now total inches. Convert this to Meters for calculation.
                   numValue = convertLength(numValue, 'Inches', 'Meters');
               }
             } else {
@@ -416,12 +395,9 @@
 
             let convertedValue;
 
-            // Conversion logic based on the selected unit type
             switch (selectedUnitType) {
               case 'Length':
               case 'Height':
-                // For Height, numValue is already in Meters if it was Feet/Inches input
-                // If fromUnit was Meters/Centimeters, numValue is directly the parseFloat result
                 convertedValue = convertLength(numValue, (selectedUnitType === 'Height' && (fromUnit === 'Feet' || fromUnit === 'Inches')) ? 'Meters' : fromUnit, toUnit);
                 break;
               case 'Weight':
@@ -437,36 +413,33 @@
                 convertedValue = t.unknownType;
             }
 
-            // Display the result
             if (typeof convertedValue === 'number') {
               let formattedResult;
               if (selectedUnitType === 'Height' && (toUnit === 'Feet' || toUnit === 'Inches')) {
-                // Pass the converted value (still in meters) to formatHeightOutput
                 formattedResult = formatHeightOutput(convertedValue, toUnit);
               } else {
-                formattedResult = convertedValue.toFixed(4); // Apply 4 decimal places for other conversions
+                formattedResult = convertedValue.toFixed(4);
               }
               setResult(`${originalInputValue} ${t.units[fromUnit]} = ${formattedResult} ${t.units[toUnit]}`);
             } else {
-              setResult(convertedValue); // Error message from conversion functions
+              setResult(convertedValue);
             }
           };
 
-          // Function to fetch explanation of a unit from LLM
           const fetchLLMExplanation = async () => {
             if (!fromUnit) {
               setLlmExplanation('Please select a "From Unit" to explain.');
               return;
             }
             setIsLoadingLLM(true);
-            setLlmExplanation(t.loadingAI); // Show loading message
+            setLlmExplanation(t.loadingAI);
 
             try {
               const prompt = `Provide a brief, concise explanation of the unit "${fromUnit}" in ${selectedLanguage} language. Focus on its definition and common usage.`;
               let chatHistory = [];
               chatHistory.push({ role: "user", parts: [{ text: prompt }] });
               const payload = { contents: chatHistory };
-              const apiKey = "" // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
+              const apiKey = ""
               const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
               
               const response = await fetch(apiUrl, {
@@ -474,7 +447,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
               });
-              const result = await response.json(); // Await the JSON parsing
+              const result = await response.json();
 
               if (result.candidates && result.candidates.length > 0 &&
                   result.candidates[0].content && result.candidates[0].content.parts &&
@@ -492,21 +465,20 @@
             }
           };
 
-          // Function to fetch a fun fact from LLM based on conversion
           const fetchLLMFunFact = async () => {
-            if (!result || result.includes('Please')) { // Check if a valid conversion result exists
+            if (!result || result.includes('Please')) {
               setLlmFunFact('Perform a conversion first to get a fun fact!');
               return;
             }
             setIsLoadingLLM(true);
-            setLlmFunFact(t.loadingAI); // Show loading message
+            setLlmFunFact(t.loadingAI);
 
             try {
               const prompt = `Provide a short, interesting fun fact or historical trivia related to the conversion between ${fromUnit} and ${toUnit}, or about these units in general, in ${selectedLanguage} language.`;
               let chatHistory = [];
               chatHistory.push({ role: "user", parts: [{ text: prompt }] });
               const payload = { contents: chatHistory };
-              const apiKey = "" // If you want to use models other than gemini-2.0-flash or imagen-3.0-generate-002, provide an API key here. Otherwise, leave this as-is.
+              const apiKey = ""
               const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
               
               const response = await fetch(apiUrl, {
@@ -514,7 +486,7 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
               });
-              const result = await response.json(); // Await the JSON parsing
+              const result = await response.json();
 
               if (result.candidates && result.candidates.length > 0 &&
                   result.candidates[0].content && result.candidates[0].content.parts &&
@@ -532,7 +504,6 @@
             }
           };
 
-          // Helper function for Length conversions (all conversions go through Meters as an intermediate)
           const convertLength = (value, from, to) => {
             const toMeters = {
               Meters: (v) => v,
@@ -554,13 +525,10 @@
               Yards: (v) => v / 0.9144,
             };
 
-            // Ensure value is converted to meters first
             let valueInMeters;
             if (toMeters[from]) {
                 valueInMeters = toMeters[from](value);
             } else {
-                // Handle cases where 'from' unit might be raw numerical input from height
-                // and needs to be treated as meters already
                 valueInMeters = value;
             }
 
@@ -571,7 +539,6 @@
             }
           };
 
-          // Helper function for Weight conversions (all conversions go through Kilograms as an intermediate)
           const convertWeight = (value, from, to) => {
             const toKilograms = {
               Pounds: (v) => v * 0.453592,
@@ -593,17 +560,15 @@
             return fromKilograms[to](valueInKilograms);
           };
 
-          // Helper function for Temperature conversions (Celsius ↔ Fahrenheit)
           const convertTemperature = (value, from, to) => {
             if (from === 'Celsius' && to === 'Fahrenheit') {
               return (value * 9) / 5 + 32;
             } else if (from === 'Fahrenheit' && to === 'Celsius') {
               return ((value - 32) * 5) / 9;
             }
-            return value; // Should not happen if logic correctly prevents fromUnit === toUnit or invalid units
+            return value;
           };
 
-          // Helper function for Volume conversions (all conversions go through Liters as an intermediate)
           const convertVolume = (value, from, to) => {
             const toLiters = {
               Liters: (v) => v,
@@ -626,12 +591,8 @@
           };
 
           return (
-            // Main container with gradient background and responsive padding
             <div className="min-h-screen bg-gradient-to-br from-blue-300 via-purple-300 to-pink-300 flex items-center justify-center p-4 sm:p-6 md:p-8 font-inter">
-              {/* Conversion Card - central container for the UI */}
-              {/* Changed max-w-5xl to max-w-7xl and added lg:p-10 for more padding on large screens */}
               <div className="bg-white p-6 sm:p-8 lg:p-10 rounded-3xl shadow-xl max-w-7xl w-full flex flex-col gap-6 transform transition-all duration-300 ease-in-out hover:scale-[1.005]">
-                {/* Language Selection */}
                 <div className="flex justify-end mb-4">
                   <div className="relative">
                     <select
@@ -654,16 +615,13 @@
                   </div>
                 </div>
 
-                {/* Title and Project Purpose */}
                 <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-800 text-center mb-2 leading-tight">
                   {t.title}
                 </h1>
-                {/* Increased text size from text-lg sm:text-xl to text-xl sm:text-2xl */}
                 <p className="text-gray-600 text-center text-xl sm:text-2xl">
                   {t.purpose}
                 </p>
 
-                {/* Unit Type Selection */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 border-b pb-4 mb-4">
                   <label htmlFor="unit-type" className="text-lg font-semibold text-gray-700">
                     {t.selectType}
@@ -677,11 +635,10 @@
                     >
                       {Object.keys(unitCategories).map((type) => (
                         <option key={type} value={type}>
-                          {unitCategories[type].emojis} {t.unitTypes[type]} {/* Translated unit type name */}
+                          {unitCategories[type].emojis} {t.unitTypes[type]}
                         </option>
                       ))}
                     </select>
-                    {/* Custom dropdown arrow */}
                     <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                       <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                         <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 6.071 6.9l-1.414 1.414L9.293 12.95z" />
@@ -690,7 +647,6 @@
                   </div>
                 </div>
 
-                {/* Input Value Field */}
                 <div>
                   <label htmlFor="input-value" className="block text-lg font-semibold text-gray-700 mb-2">
                     {t.inputValue}
@@ -702,13 +658,11 @@
                     placeholder={selectedUnitType === 'Height' && (fromUnit === 'Feet' || fromUnit === 'Inches') ? "e.g., 6'3\" or 75" : "Enter value"}
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
-                    min="0" // Only applies to type="number"
+                    min="0"
                   />
                 </div>
 
-                {/* From and To Unit Selection */}
                 <div className="flex flex-col sm:flex-row gap-4">
-                  {/* From Unit Dropdown */}
                   <div className="flex-1">
                     <label htmlFor="from-unit" className="block text-lg font-semibold text-gray-700 mb-2">
                       {t.fromUnit}
@@ -722,11 +676,10 @@
                       >
                         {unitCategories[selectedUnitType]?.units.map((unit) => (
                           <option key={unit} value={unit}>
-                            {t.units[unit]} {/* Translated unit name */}
+                            {t.units[unit]}
                           </option>
                         ))}
                       </select>
-                      {/* Custom dropdown arrow */}
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                         <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                           <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 6.071 6.9l-1.414 1.414L9.293 12.95z" />
@@ -735,7 +688,6 @@
                     </div>
                   </div>
 
-                  {/* To Unit Dropdown */}
                   <div className="flex-1">
                     <label htmlFor="to-unit" className="block text-lg font-semibold text-gray-700 mb-2">
                       {t.toUnit}
@@ -749,11 +701,10 @@
                       >
                         {unitCategories[selectedUnitType]?.units.map((unit) => (
                           <option key={unit} value={unit}>
-                            {t.units[unit]} {/* Translated unit name */}
+                            {t.units[unit]}
                           </option>
                         ))}
                       </select>
-                      {/* Custom dropdown arrow */}
                       <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                         <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                           <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 6.071 6.9l-1.414 1.414L9.293 12.95z" />
@@ -763,7 +714,6 @@
                   </div>
                 </div>
 
-                {/* Convert Button */}
                 <button
                   onClick={handleConversion}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 shadow-md hover:shadow-lg transform transition-all duration-300 ease-in-out active:scale-95"
@@ -771,18 +721,17 @@
                   {t.convertButton}
                 </button>
 
-                {/* LLM Feature Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button
                     onClick={fetchLLMExplanation}
-                    disabled={isLoadingLLM || !fromUnit} // Disable if loading or no fromUnit selected
+                    disabled={isLoadingLLM || !fromUnit}
                     className="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-6 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 shadow-md hover:shadow-lg transform transition-all duration-300 ease-in-out active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isLoadingLLM ? t.loadingAI : t.explainUnitButton}
                   </button>
                   <button
                     onClick={fetchLLMFunFact}
-                    disabled={isLoadingLLM || !result || result.includes('Please')} // Disable if loading or no valid result
+                    disabled={isLoadingLLM || !result || result.includes('Please')}
                     className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 shadow-md hover:shadow-lg transform transition-all duration-300 ease-in-out active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isLoadingLLM ? t.loadingAI : t.funFactButton}
@@ -790,7 +739,6 @@
                 </div>
 
 
-                {/* Result Display */}
                 {result && (
                   <div className="mt-4 p-4 bg-gray-100 rounded-lg text-center text-xl sm:text-2xl font-bold text-gray-800 shadow-inner break-words">
                     <p className="flex items-center justify-center gap-2">
@@ -799,7 +747,6 @@
                   </div>
                 )}
 
-                {/* LLM Explanation Display */}
                 {llmExplanation && (
                   <div className="mt-4 p-4 bg-yellow-50 rounded-lg text-center text-base sm:text-lg text-gray-700 shadow-inner break-words border border-yellow-200">
                     <h3 className="font-semibold mb-2 text-yellow-800">Unit Explanation:</h3>
@@ -807,7 +754,6 @@
                   </div>
                 )}
 
-                {/* LLM Fun Fact Display */}
                 {llmFunFact && (
                   <div className="mt-4 p-4 bg-teal-50 rounded-lg text-center text-base sm:text-lg text-gray-700 shadow-inner break-words border border-teal-200">
                     <h3 className="font-semibold mb-2 text-teal-800">Fun Fact:</h3>
