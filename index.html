@@ -26,6 +26,9 @@
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <script type="text/babel">
+   "https://universal-unit-converter-50.onrender.com"
+
+
         // Translations object for multi-language support
         const translations = {
           English: {
@@ -45,6 +48,7 @@
             invalidHeightFormat: "Invalid height format. Use 'X'Y\"' (e.g., 6'3\") or a number (e.g., 75 for inches).",
             resultPrefix: '✨ ',
             resultSuffix: ' ✨',
+            conversionHistoryTitle: 'Conversion History', // New translation
             // Unit Type Translations
             unitTypes: {
               Length: 'Length',
@@ -78,6 +82,7 @@
             invalidHeightFormat: "Format de hauteur invalide. Utilisez 'X'Y\"' (ex: 6'3\") ou un nombre (ex: 75 pour pouces).",
             resultPrefix: '✨ ',
             resultSuffix: ' ✨',
+            conversionHistoryTitle: 'Historique des Conversions', // New translation
             // Unit Type Translations
             unitTypes: {
               Length: 'Longueur',
@@ -88,7 +93,7 @@
             },
             // Unit Name Translations
             units: {
-              Meters: 'Mètres', Feet: 'Pieds', Kilometers: 'Kilomètres', Miles: 'Miles', Inches: 'Pouces', Centimeters: 'Centimètres', Yards: 'Verges',
+              Meters: 'Mètres', Feet: 'Pieds', Kilometers: 'Kilomètres', Miles: 'Milles', Inches: 'Pouces', Centimeters: 'Centimètres', Yards: 'Verges',
               Pounds: 'Livres', Kilograms: 'Kilogrammes', Ounces: 'Onces', Grams: 'Grammes', Stones: 'Stones',
               Celsius: 'Celsius', Fahrenheit: 'Fahrenheit',
               Liters: 'Litres', Gallons: 'Gallons', Millilitres: 'Millilitres', 'Fluid Ounces': 'Onces liquides', Cups: 'Tasses',
@@ -111,6 +116,7 @@
             invalidHeightFormat: "Formato altezza non valido. Usa 'X'Y\"' (es: 6'3\") o un numero (es: 75 per pollici).",
             resultPrefix: '✨ ',
             resultSuffix: ' ✨',
+            conversionHistoryTitle: 'Cronologia Conversioni', // New translation
             // Unit Type Translations
             unitTypes: {
               Length: 'Lunghezza',
@@ -144,6 +150,7 @@
             invalidHeightFormat: "Ungültiges Höhenformat. Verwenden Sie 'X'Y\"' (z.B. 6'3\") oder eine Zahl (z.B. 75 für Zoll).",
             resultPrefix: '✨ ',
             resultSuffix: ' ✨',
+            conversionHistoryTitle: 'Umrechnungsverlauf', // New translation
             // Unit Type Translations
             unitTypes: {
               Length: 'Länge',
@@ -161,7 +168,7 @@
             },
           },
           Chinese: {
-            title: '� 通用单位转换器',
+            title: '🌍 通用单位转换器',
             purpose: '轻松转换长度、重量、温度和体积等日常测量单位。我的AI原生之旅的迷你项目 🚀。',
             selectType: '选择类型:',
             inputValue: '要转换的值:',
@@ -177,6 +184,7 @@
             invalidHeightFormat: "身高格式无效。使用“X'Y\"”（例如 6'3\"）或数字（例如 75 表示英寸）。",
             resultPrefix: '✨ ',
             resultSuffix: ' ✨',
+            conversionHistoryTitle: '转换历史', // New translation
             // Unit Type Translations
             unitTypes: {
               Length: '长度',
@@ -210,13 +218,14 @@
             invalidHeightFormat: "Formato de altura no válido. Usa 'X'Y\"' (ej: 6'3\") o un número (ej: 75 para pulgadas).",
             resultPrefix: '✨ ',
             resultSuffix: ' ✨',
+            conversionHistoryTitle: 'Historial de Conversiones', // New translation
             // Unit Type Translations
             unitTypes: {
               Length: 'Longitud',
               Height: 'Altura',
               Weight: 'Peso',
               Temperature: 'Temperatura',
-              Volume: 'Volumen',
+              Volume: 'Volume',
             },
             // Unit Name Translations
             units: {
@@ -233,14 +242,14 @@
             inputValue: 'Valor para converter:',
             fromUnit: 'Da Unidade:',
             toUnit: 'Para Unidade:',
-            convertButton: 'Converter',
+            convertButton: 'Convertir',
             explainUnitButton: 'Explicar Unidade ✨',
             funFactButton: 'Curiosidade ✨',
             loadingAI: 'A IA está pensando...',
             enterNumber: 'Por favor, insira um número válido.',
             selectUnits: 'Por favor, selecione as unidades "de" e "para".',
             unknownType: 'Erro: Tipo de unidade desconhecido',
-            invalidHeightFormat: "Formato de altura inválido. Use 'X'Y\"' (ex: 6'3\") ou um número (ex: 75 para polegadas).",
+            invalidHeightFormat: "Formato de altura inválido. Use 'X'Y\"' (ex: 6'3\") ou un número (ex: 75 para polegadas).",
             resultPrefix: '✨ ',
             resultSuffix: ' ✨',
             // Unit Type Translations
@@ -264,13 +273,13 @@
 
         // Main App Component for the Universal Unit Converter
         function App() {
-          // Changed useState to React.useState and useEffect to React.useEffect
           const [inputValue, setInputValue] = React.useState('');
           const [selectedUnitType, setSelectedUnitType] = React.useState('Length');
           const [fromUnit, setFromUnit] = React.useState('');
           const [toUnit, setToUnit] = React.useState('');
           const [result, setResult] = React.useState('');
           const [selectedLanguage, setSelectedLanguage] = React.useState('English');
+          const [conversionHistory, setConversionHistory] = React.useState([]);
 
           const [llmExplanation, setLlmExplanation] = React.useState('');
           const [llmFunFact, setLlmFunFact] = React.useState('');
@@ -311,7 +320,7 @@
             },
           };
 
-          React.useEffect(() => { // Changed useEffect to React.useEffect
+          React.useEffect(() => {
             const currentCategory = unitCategories[selectedUnitType];
             if (currentCategory) {
               setFromUnit(currentCategory.defaultFrom);
@@ -319,113 +328,83 @@
               setResult('');
               setLlmExplanation('');
               setLlmFunFact('');
+              // No need to fetch history here initially, can be fetched on component mount
             }
           }, [selectedUnitType, selectedLanguage]);
 
-          const parseHeightInput = (inputString, fromUnit) => {
-            inputString = inputString.trim();
-            const feetInchesMatch = inputString.match(/^(\d+)'(\d*)"?$/);
-            if (feetInchesMatch) {
-              const feet = parseInt(feetInchesMatch[1] || '0', 10);
-              const inches = parseInt(feetInchesMatch[2] || '0', 10);
-              return (feet * 12) + inches;
-            }
-            const pureInchesMatch = inputString.match(/^(\d+)"$/);
-            if (pureInchesMatch) {
-              return parseInt(pureInchesMatch[1], 10);
-            }
-            const num = parseFloat(inputString);
-            if (!isNaN(num)) {
-              if (fromUnit === 'Feet') {
-                return num * 12;
-              } else if (fromUnit === 'Inches') {
-                return num;
-              }
-              return num;
-            }
-            return NaN;
-          };
-
-          const formatHeightOutput = (totalValueInMeters, toUnit) => {
-            if (toUnit === 'Feet' || toUnit === 'Inches') {
-              const totalInches = convertLength(totalValueInMeters, 'Meters', 'Inches');
-              const feet = Math.floor(totalInches / 12);
-              const remainingInches = totalInches % 12;
-              const roundedRemainingInches = parseFloat(remainingInches.toFixed(2));
-
-              if (toUnit === 'Feet') {
-                if (roundedRemainingInches >= 11.99) {
-                  return `${feet + 1}'0"`;
+          // Fetch initial history when component mounts
+          React.useEffect(() => {
+            const fetchHistory = async () => {
+                if (BACKEND_URL === "YOUR_RENDER_BACKEND_URL_HERE") {
+                    console.warn("Backend URL not set. History will not be fetched.");
+                    return;
                 }
-                return `${feet}'${roundedRemainingInches}"`;
-              } else if (toUnit === 'Inches') {
-                return `${totalInches.toFixed(2)}"`;
-              }
+                try {
+                    const response = await fetch(`${BACKEND_URL}/history`);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    const data = await response.json();
+                    if (data.history) {
+                        setConversionHistory(data.history);
+                    }
+                } catch (error) {
+                    console.error("Error fetching history:", error);
+                    // Optionally set a user-facing error message
+                }
+            };
+            fetchHistory();
+          }, []); // Empty dependency array means this runs once on mount
+
+
+          // Function to handle the conversion logic - NOW USES BACKEND
+          const handleConversion = async () => {
+            if (!inputValue) {
+              setResult(t.enterNumber);
+              return;
             }
-            return totalValueInMeters.toFixed(4);
-          };
-
-          const handleConversion = () => {
-            let numValue;
-            let originalInputValue = inputValue;
-
-            setLlmFunFact('');
-
-            if (selectedUnitType === 'Height' && (fromUnit === 'Feet' || fromUnit === 'Inches')) {
-              numValue = parseHeightInput(inputValue, fromUnit);
-              if (isNaN(numValue)) {
-                setResult(t.invalidHeightFormat);
-                return;
-              }
-              if (fromUnit === 'Feet' || fromUnit === 'Inches') {
-                  numValue = convertLength(numValue, 'Inches', 'Meters');
-              }
-            } else {
-              numValue = parseFloat(inputValue);
-              if (isNaN(numValue)) {
-                setResult(t.enterNumber);
-                return;
-              }
-            }
-
             if (!fromUnit || !toUnit) {
               setResult(t.selectUnits);
               return;
             }
 
-            let convertedValue;
+            setLlmFunFact(''); // Clear previous fun fact on new conversion
+            setResult(t.loadingAI); // Show loading message during conversion
 
-            switch (selectedUnitType) {
-              case 'Length':
-              case 'Height':
-                convertedValue = convertLength(numValue, (selectedUnitType === 'Height' && (fromUnit === 'Feet' || fromUnit === 'Inches')) ? 'Meters' : fromUnit, toUnit);
-                break;
-              case 'Weight':
-                convertedValue = convertWeight(numValue, fromUnit, toUnit);
-                break;
-              case 'Temperature':
-                convertedValue = convertTemperature(numValue, fromUnit, toUnit);
-                break;
-              case 'Volume':
-                convertedValue = convertVolume(numValue, fromUnit, toUnit);
-                break;
-              default:
-                convertedValue = t.unknownType;
-            }
+            try {
+                const response = await fetch(`${BACKEND_URL}/convert`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        inputValue: inputValue,
+                        selectedUnitType: selectedUnitType,
+                        fromUnit: fromUnit,
+                        toUnit: toUnit,
+                        language: selectedLanguage
+                    })
+                });
 
-            if (typeof convertedValue === 'number') {
-              let formattedResult;
-              if (selectedUnitType === 'Height' && (toUnit === 'Feet' || toUnit === 'Inches')) {
-                formattedResult = formatHeightOutput(convertedValue, toUnit);
-              } else {
-                formattedResult = convertedValue.toFixed(4);
-              }
-              setResult(`${originalInputValue} ${t.units[fromUnit]} = ${formattedResult} ${t.units[toUnit]}`);
-            } else {
-              setResult(convertedValue);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                if (data.error) {
+                    setResult(data.error);
+                } else {
+                    setResult(data.result_string);
+                    setConversionHistory(data.history); // Update history from backend
+                }
+            } catch (error) {
+                console.error('Error during conversion:', error);
+                setResult('Failed to perform conversion. Please check backend.');
             }
           };
 
+          // Function to fetch explanation of a unit from LLM - NOW USES BACKEND
           const fetchLLMExplanation = async () => {
             if (!fromUnit) {
               setLlmExplanation('Please select a "From Unit" to explain.');
@@ -435,38 +414,34 @@
             setLlmExplanation(t.loadingAI);
 
             try {
-              const prompt = `Provide a brief, concise explanation of the unit "${fromUnit}" in ${selectedLanguage} language. Focus on its definition and common usage.`;
-              let chatHistory = [];
-              chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-              const payload = { contents: chatHistory };
-              const apiKey = ""
-              const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-              
-              const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-              });
-              const result = await response.json();
+                const response = await fetch(`${BACKEND_URL}/explain-unit`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        unit: fromUnit,
+                        language: selectedLanguage
+                    })
+                });
 
-              if (result.candidates && result.candidates.length > 0 &&
-                  result.candidates[0].content && result.candidates[0].content.parts &&
-                  result.candidates[0].content.parts.length > 0) {
-                const text = result.candidates[0].content.parts[0].text;
-                setLlmExplanation(text);
-              } else {
-                setLlmExplanation('Could not get an explanation. Please try again.');
-              }
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                setLlmExplanation(data.explanation || 'Could not get an explanation. Please try again.');
             } catch (error) {
-              console.error('Error fetching LLM explanation:', error);
-              setLlmExplanation('Failed to fetch explanation. Network error or API issue.');
+                console.error('Error fetching LLM explanation:', error);
+                setLlmExplanation('Failed to fetch explanation. Network error or API issue.');
             } finally {
               setIsLoadingLLM(false);
             }
           };
 
+          // Function to fetch a fun fact from LLM based on conversion - NOW USES BACKEND
           const fetchLLMFunFact = async () => {
-            if (!result || result.includes('Please')) {
+            if (!result || result.includes('Please') || result.includes('Failed')) {
               setLlmFunFact('Perform a conversion first to get a fun fact!');
               return;
             }
@@ -474,121 +449,32 @@
             setLlmFunFact(t.loadingAI);
 
             try {
-              const prompt = `Provide a short, interesting fun fact or historical trivia related to the conversion between ${fromUnit} and ${toUnit}, or about these units in general, in ${selectedLanguage} language.`;
-              let chatHistory = [];
-              chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-              const payload = { contents: chatHistory };
-              const apiKey = ""
-              const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-              
-              const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-              });
-              const result = await response.json();
+                const response = await fetch(`${BACKEND_URL}/fun-fact`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        fromUnit: fromUnit,
+                        toUnit: toUnit,
+                        language: selectedLanguage
+                    })
+                });
 
-              if (result.candidates && result.candidates.length > 0 &&
-                  result.candidates[0].content && result.candidates[0].content.parts &&
-                  result.candidates[0].content.parts.length > 0) {
-                const text = result.candidates[0].content.parts[0].text;
-                setLlmFunFact(text);
-              } else {
-                setLlmFunFact('Could not get a fun fact. Please try again.');
-              }
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                setLlmFunFact(data.funFact || 'Could not get a fun fact. Please try again.');
             } catch (error) {
-              console.error('Error fetching LLM fun fact:', error);
-              setLlmFunFact('Failed to fetch fun fact. Network error or API issue.');
+                console.error('Error fetching LLM fun fact:', error);
+                setLlmFunFact('Failed to fetch fun fact. Network error or API issue.');
             } finally {
               setIsLoadingLLM(false);
             }
           };
 
-          const convertLength = (value, from, to) => {
-            const toMeters = {
-              Meters: (v) => v,
-              Feet: (v) => v * 0.3048,
-              Kilometers: (v) => v * 1000,
-              Miles: (v) => v * 1609.34,
-              Inches: (v) => v * 0.0254,
-              Centimeters: (v) => v * 0.01,
-              Yards: (v) => v * 0.9144,
-            };
-
-            const fromMeters = {
-              Meters: (v) => v,
-              Feet: (v) => v / 0.3048,
-              Kilometers: (v) => v / 1000,
-              Miles: (v) => v / 1609.34,
-              Inches: (v) => v / 0.0254,
-              Centimeters: (v) => v / 0.01,
-              Yards: (v) => v / 0.9144,
-            };
-
-            let valueInMeters;
-            if (toMeters[from]) {
-                valueInMeters = toMeters[from](value);
-            } else {
-                valueInMeters = value;
-            }
-
-            if (fromMeters[to]) {
-                return fromMeters[to](valueInMeters);
-            } else {
-                return 'Error: Invalid target unit for length conversion.';
-            }
-          };
-
-          const convertWeight = (value, from, to) => {
-            const toKilograms = {
-              Pounds: (v) => v * 0.453592,
-              Kilograms: (v) => v,
-              Ounces: (v) => v * 0.0283495,
-              Grams: (v) => v * 0.001,
-              Stones: (v) => v * 6.35029,
-            };
-
-            const fromKilograms = {
-              Pounds: (v) => v / 0.453592,
-              Kilograms: (v) => v,
-              Ounces: (v) => v / 0.0283495,
-              Grams: (v) => v / 0.001,
-              Stones: (v) => v / 6.35029,
-            };
-
-            const valueInKilograms = toKilograms[from](value);
-            return fromKilograms[to](valueInKilograms);
-          };
-
-          const convertTemperature = (value, from, to) => {
-            if (from === 'Celsius' && to === 'Fahrenheit') {
-              return (value * 9) / 5 + 32;
-            } else if (from === 'Fahrenheit' && to === 'Celsius') {
-              return ((value - 32) * 5) / 9;
-            }
-            return value;
-          };
-
-          const convertVolume = (value, from, to) => {
-            const toLiters = {
-              Liters: (v) => v,
-              Gallons: (v) => v * 3.78541,
-              Milliliters: (v) => v * 0.001,
-              'Fluid Ounces': (v) => v * 0.0295735,
-              Cups: (v) => v * 0.236588,
-            };
-
-            const fromLiters = {
-              Liters: (v) => v,
-              Gallons: (v) => v / 3.78541,
-              Milliliters: (v) => v / 0.001,
-              'Fluid Ounces': (v) => v / 0.0295735,
-              Cups: (v) => v / 0.236588,
-            };
-
-            const valueInLiters = toLiters[from](value);
-            return fromLiters[to](valueInLiters);
-          };
 
           return (
             <div className="min-h-screen bg-gradient-to-br from-blue-300 via-purple-300 to-pink-300 flex items-center justify-center p-4 sm:p-6 md:p-8 font-inter">
@@ -653,12 +539,11 @@
                   </label>
                   <input
                     id="input-value"
-                    type={selectedUnitType === 'Height' && (fromUnit === 'Feet' || fromUnit === 'Inches') ? 'text' : 'number'}
+                    type="text"
                     className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-200 text-lg shadow-sm"
                     placeholder={selectedUnitType === 'Height' && (fromUnit === 'Feet' || fromUnit === 'Inches') ? "e.g., 6'3\" or 75" : "Enter value"}
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
-                    min="0"
                   />
                 </div>
 
@@ -731,7 +616,7 @@
                   </button>
                   <button
                     onClick={fetchLLMFunFact}
-                    disabled={isLoadingLLM || !result || result.includes('Please')}
+                    disabled={isLoadingLLM || !result || result.includes('Please') || result.includes('Failed')}
                     className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 shadow-md hover:shadow-lg transform transition-all duration-300 ease-in-out active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isLoadingLLM ? t.loadingAI : t.funFactButton}
@@ -760,6 +645,25 @@
                     <p>{llmFunFact}</p>
                   </div>
                 )}
+
+                {/* Conversion History Display */}
+                {conversionHistory.length > 0 && (
+                  <div className="mt-6 p-4 bg-gray-50 rounded-lg shadow-md border border-gray-200">
+                    <h3 className="text-xl font-bold text-gray-800 text-center mb-4">
+                      {t.conversionHistoryTitle}
+                    </h3>
+                    <div className="space-y-3 max-h-60 overflow-y-auto">
+                      {conversionHistory.map((entry, index) => (
+                        <div key={index} className="bg-white p-3 rounded-lg shadow-sm border border-gray-100 text-sm sm:text-base">
+                          <p className="text-gray-600 text-xs text-right mb-1">{entry.timestamp}</p>
+                          <p className="text-gray-800 font-medium">{entry.result_string}</p>
+                          <p className="text-gray-500 text-xs">Type: {t.unitTypes[entry.unit_type]}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
               </div>
             </div>
           );
