@@ -99,6 +99,7 @@ UNIT_CATEGORIES = {
     },
     "Volume": {
         "units": ["Liters", "Gallons", "Milliliters", "Fluid Ounces", "Cups"],
+        "emojis": "🧪",
         "defaultFrom": "Liters",
         "defaultTo": "Gallons",
     },
@@ -131,6 +132,7 @@ def parse_height_input(input_string, from_unit):
         return float('nan')
 
 def format_height_output(total_value_in_meters, to_unit):
+    # This function is specifically for Feet/Inches string formatting and should not be changed to fixed decimals
     if to_unit in ['Feet', 'Inches']:
         total_inches = convert_length(total_value_in_meters, 'Meters', 'Inches')
         feet = int(total_inches // 12)
@@ -142,6 +144,7 @@ def format_height_output(total_value_in_meters, to_unit):
             return f"{feet}'{rounded_remaining_inches}\""
         elif to_unit == 'Inches':
             return f"{round(total_inches, 2)}\""
+    # Fallback for other units if this function is called incorrectly
     return f"{total_value_in_meters:.4f}"
 
 def convert_length(value, from_unit, to_unit):
@@ -203,7 +206,6 @@ def get_llm_response(prompt_text, language="English"):
     # use a library like 'requests' to make an HTTP POST request to the Gemini API.
     # The API key would be loaded from environment variables, not hardcoded.
     if "explanation" in prompt_text.lower():
-        # Extract the unit from the prompt
         match = re.search(r"unit '([^']+)'", prompt_text)
         unit_name = match.group(1) if match else "unknown unit"
         return f"AI: The unit '{unit_name}' is a fundamental measurement used globally."
@@ -213,27 +215,68 @@ def get_llm_response(prompt_text, language="English"):
         return "AI: I'm designed to help with unit explanations and fun facts!"
 
 def perform_conversion_and_record(input_value, selected_unit_type, from_unit, to_unit, language="English"):
+    """
+    Performs a unit conversion, records it in the global history, and returns the result.
+
+    This function orchestrates the entire conversion process:
+    1. Parses the input value, handling special formats like 'Height' (feet/inches).
+    2. Validates inputs (e.g., checks if units are selected, if value is a number).
+    3. Calls the appropriate specific conversion helper function (e.g., convert_length).
+    4. Formats the converted result for display based on new decimal rules.
+    5. Creates a structured dictionary representing the conversion event.
+    6. Adds the new conversion record to the global CONVERSION_HISTORY.
+    7. Returns a dictionary containing the formatted result string, the updated
+       history, and the raw converted value.
+
+    Args:
+        input_value (str): The value entered by the user (e.g., "10", "6'3\"").
+        selected_unit_type (str): The category of units (e.g., "Length", "Height").
+        from_unit (str): The unit to convert from (e.g., "Meters", "Feet").
+        to_unit (str): The unit to convert to (e.g., "Feet", "Meters").
+        language (str): The selected language for messages (e.g., "English").
+
+    Returns:
+        dict: A dictionary containing:
+            - "result_string" (str): The formatted conversion result for display.
+            - "history" (list): The updated list of conversion history records.
+            - "raw_converted_value" (float/int): The numerical converted value.
+            - "error" (str, optional): An error message if the conversion failed.
+    """
+    # Get translations for the current language
     t = TRANSLATIONS.get(language, TRANSLATIONS["English"])
+
+    # 1. Input Parsing and Validation
     num_value = None
     if selected_unit_type == 'Height' and (from_unit in ['Feet', 'Inches']):
+        # If height is selected and from unit is Feet or Inches, parse complex string
         num_value = parse_height_input(input_value, from_unit)
-        if isinstance(num_value, float) and (num_value != num_value):
+        if isinstance(num_value, float) and (num_value != num_value): # Check for NaN
             return {"error": t["invalidHeightFormat"]}
+        # Convert parsed inches value to the base unit (Meters) for `convert_length`
         if from_unit == 'Feet' or from_unit == 'Inches':
+            # This step converts inches (or feet converted to inches) to meters for internal consistency
             num_value = convert_length(num_value, 'Inches', 'Meters')
     else:
+        # For other unit types or simple numerical height input, attempt float conversion
         try:
             num_value = float(input_value)
         except ValueError:
             return {"error": t["enterNumber"]}
 
-    if num_value is None or from_unit not in UNIT_CATEGORIES[selected_unit_type]["units"] or \
-       to_unit not in UNIT_CATEGORIES[selected_unit_type]["units"]:
+    # Basic unit selection validation
+    if num_value is None or \
+       from_unit not in UNIT_CATEGORIES.get(selected_unit_type, {}).get("units", []) or \
+       to_unit not in UNIT_CATEGORIES.get(selected_unit_type, {}).get("units", []):
         return {"error": t["selectUnits"]}
 
+    # 2. Perform Conversion based on unit type
     converted_value = None
-    if selected_unit_type == 'Length' or selected_unit_type == 'Height':
-        converted_value = convert_length(num_value, 'Meters' if selected_unit_type == 'Height' and (from_unit == 'Feet' or from_unit == 'Inches') else from_unit, to_unit)
+    if selected_unit_type == 'Length':
+        converted_value = convert_length(num_value, from_unit, to_unit)
+    elif selected_unit_type == 'Height':
+        # `num_value` is already in meters if original was feet/inches,
+        # otherwise it's direct float input in meters/centimeters
+        converted_value = convert_length(num_value, 'Meters', to_unit) # Always convert from meters for height
     elif selected_unit_type == 'Weight':
         converted_value = convert_weight(num_value, from_unit, to_unit)
     elif selected_unit_type == 'Temperature':
@@ -243,28 +286,40 @@ def perform_conversion_and_record(input_value, selected_unit_type, from_unit, to
     else:
         return {"error": t["unknownType"]}
 
+    # Check for errors returned by conversion helper functions
     if isinstance(converted_value, str) and "Error" in converted_value:
         return {"error": converted_value}
 
+    # 3. Format the Result for display
     formatted_result = None
-    if selected_unit_type == 'Height' and (to_unit in ['Feet', 'Inches']):
-        formatted_result = format_height_output(converted_value, to_unit)
+    if selected_unit_type == 'Height':
+        # If it's height, check the target unit for formatting
+        if to_unit in ['Feet', 'Inches']:
+            # Feet/Inches output uses special format, not fixed decimals
+            formatted_result = format_height_output(converted_value, to_unit)
+        else:
+            # Metric height units (Meters, Centimeters) should have 2 decimal places
+            formatted_result = f"{converted_value:.2f}"
     else:
-        formatted_result = f"{converted_value:.4f}"
+        # All other unit types (Length, Weight, Temperature, Volume) get 4 decimal places
+        formatted_result = f"{converted_value:.4f}" # CHANGED back to 4 decimal places here
 
+    # Construct the full result string for display in the UI
     final_result_string = f"{input_value} {t['units'][from_unit]} = {formatted_result} {t['units'][to_unit]}"
 
+    # 4. Record Conversion in History (as a dictionary)
     new_conversion_record = {
-        "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "timestamp": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), # Current timestamp
         "unit_type": selected_unit_type,
         "input_value": input_value,
         "from_unit": from_unit,
         "to_unit": to_unit,
-        "converted_result": formatted_result,
-        "result_string": final_result_string,
+        "converted_result": formatted_result, # Store the formatted string result
+        "result_string": final_result_string, # Store the full display string
     }
-    CONVERSION_HISTORY.insert(0, new_conversion_record)
+    CONVERSION_HISTORY.insert(0, new_conversion_record) # Add to the beginning for most recent first
 
+    # 5. Return the result and updated history
     return {
         "result_string": final_result_string,
         "history": CONVERSION_HISTORY,
