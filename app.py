@@ -5,10 +5,6 @@ import datetime
 import json
 import re
 
-# Import the core logic functions directly from your unit_converter_logic.py
-# For a single file, you can copy-paste them or include them directly.
-# For simplicity in this single file example, I'll include the core logic here.
-
 # --- Translation Data (Copied from unit-converter-python-logic Canvas) ---
 TRANSLATIONS = {
     "English": {
@@ -75,7 +71,7 @@ TRANSLATIONS = {
     },
 }
 
-# Define unit categories and their properties (Copied from unit-converter-python-logic Canvas)
+# Define unit categories and their properties
 UNIT_CATEGORIES = {
     "Length": {
         "units": ["Meters", "Feet", "Kilometers", "Miles", "Inches", "Centimeters", "Yards"],
@@ -99,53 +95,16 @@ UNIT_CATEGORIES = {
     },
     "Volume": {
         "units": ["Liters", "Gallons", "Milliliters", "Fluid Ounces", "Cups"],
-        "emojis": "🧪",
+        "emojis": "�",
         "defaultFrom": "Liters",
         "defaultTo": "Gallons",
     },
 }
 
 # This list will hold the conversion history (in-memory for this example)
-# In a real deployed app, this would be backed by a database.
 CONVERSION_HISTORY = []
 
-# --- Helper Functions (Copied from unit-converter-python-logic Canvas) ---
-
-def parse_height_input(input_string, from_unit):
-    input_string = input_string.strip()
-    feet_inches_match = re.match(r"^(\d+)'(\d*)\"?$", input_string)
-    if feet_inches_match:
-        feet = int(feet_inches_match.group(1) or '0')
-        inches = int(feet_inches_match.group(2) or '0')
-        return (feet * 12) + inches
-    pure_inches_match = re.match(r"^(\d+)\"?$", input_string)
-    if pure_inches_match:
-        return int(pure_inches_match.group(1))
-    try:
-        num = float(input_string)
-        if from_unit == 'Feet':
-            return num * 12
-        elif from_unit == 'Inches':
-            return num
-        return num
-    except ValueError:
-        return float('nan')
-
-def format_height_output(total_value_in_meters, to_unit):
-    # This function is specifically for Feet/Inches string formatting and should not be changed to fixed decimals
-    if to_unit in ['Feet', 'Inches']:
-        total_inches = convert_length(total_value_in_meters, 'Meters', 'Inches')
-        feet = int(total_inches // 12)
-        remaining_inches = total_inches % 12
-        rounded_remaining_inches = round(remaining_inches, 2)
-        if to_unit == 'Feet':
-            if rounded_remaining_inches >= 11.99:
-                return f"{feet + 1}'0\""
-            return f"{feet}'{rounded_remaining_inches}\""
-        elif to_unit == 'Inches':
-            return f"{round(total_inches, 2)}\""
-    # Fallback for other units if this function is called incorrectly
-    return f"{total_value_in_meters:.4f}"
+# --- Helper Functions (Ensuring correct order for Python execution) ---
 
 def convert_length(value, from_unit, to_unit):
     to_meters_factors = {
@@ -162,6 +121,41 @@ def convert_length(value, from_unit, to_unit):
         return "Error: Invalid unit for length conversion."
     value_in_meters = to_meters_factors[from_unit](value)
     return from_meters_factors[to_unit](value_in_meters)
+
+def parse_height_input(input_string, from_unit):
+    input_string = input_string.strip()
+    feet_inches_match = re.match(r"^(\d+)'(\d*)\"?$", input_string)
+    if feet_inches_match:
+        feet = int(feet_inches_match.group(1) or '0')
+        inches = int(feet_inches_match.group(2) or '0')
+        return (feet * 12) + inches
+    pure_inches_match = re.match(r"^(\d+)\"?$", input_string)
+    if pure_inches_match:
+        return int(pure_inches_match.group(1))
+    try:
+        num = float(input_string)
+        # Handle cases where direct number is provided for feet/inches
+        if from_unit == 'Feet':
+            return num * 12 # Convert feet to inches
+        elif from_unit == 'Inches':
+            return num # Already in inches
+        return num # For other units like Meters/Centimeters (will be handled by convert_length)
+    except ValueError:
+        return float('nan')
+
+def format_height_output(total_value_in_meters, to_unit):
+    if to_unit in ['Feet', 'Inches']:
+        total_inches = convert_length(total_value_in_meters, 'Meters', 'Inches')
+        feet = int(total_inches // 12)
+        remaining_inches = total_inches % 12
+        rounded_remaining_inches = round(remaining_inches, 2)
+        if to_unit == 'Feet':
+            if rounded_remaining_inches >= 11.99:
+                return f"{feet + 1}'0\""
+            return f"{feet}'{rounded_remaining_inches}\""
+        elif to_unit == 'Inches':
+            return f"{round(total_inches, 2)}\""
+    return f"{total_value_in_meters:.4f}"
 
 def convert_weight(value, from_unit, to_unit):
     to_kilograms_factors = {
