@@ -382,4 +382,4 @@ def get_history():
 if __name__ == '__main__':
     # This runs the Flask development server
     # For production deployment on Render, Gunicorn or similar WSGI server is used.
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # app.run(debug=True, host='0.0.0.0', port=5000) # This line should be commented out or removed for Render deployment
