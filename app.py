@@ -156,13 +156,23 @@ def format_height_output(total_value_in_meters, to_unit):
         # Handle carry-over if inches round up to 12
         if rounded_remaining_inches >= 12: # If it rounds to 12, it means a full foot
             feet += 1
-            rounded_remaining_inches = 0
-
+            rounded_remaining_inches = 0 # Reset inches to 0
+        
+        # Ensure inches don't display as 0'0" if the input was 0
+        if feet == 0 and rounded_remaining_inches == 0 and total_inches > 0:
+             # If total_inches was very small, but not exactly zero, show it as a small inch value
+             if total_inches < 1 and to_unit == 'Inches':
+                 return f"{round(total_inches, 2)}\""
+             return f"0'0\"" # For a very small value that rounds to 0 feet 0 inches
+        
         if to_unit == 'Feet':
             return f"{feet}'{rounded_remaining_inches}\""
         elif to_unit == 'Inches':
-            return f"{round(total_inches, 2)}\"" # Keep 2 decimals for total inches if specifically asked for inches
-    return f"{total_value_in_meters:.4f}"
+            # This path is for when 'Inches' is the *target* unit, and we want total inches, possibly with decimals
+            return f"{round(total_inches, 2)}\""
+    # For metric height units, keep 2 decimal places as per previous requirement
+    return f"{total_value_in_meters:.2f}"
+
 
 def convert_weight(value, from_unit, to_unit):
     to_kilograms_factors = {
