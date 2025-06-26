@@ -95,7 +95,7 @@ UNIT_CATEGORIES = {
     },
     "Volume": {
         "units": ["Liters", "Gallons", "Milliliters", "Fluid Ounces", "Cups"],
-        "emojis": "�",
+        "emojis": "🧪",
         "defaultFrom": "Liters",
         "defaultTo": "Gallons",
     },
@@ -146,15 +146,22 @@ def parse_height_input(input_string, from_unit):
 def format_height_output(total_value_in_meters, to_unit):
     if to_unit in ['Feet', 'Inches']:
         total_inches = convert_length(total_value_in_meters, 'Meters', 'Inches')
+        
         feet = int(total_inches // 12)
         remaining_inches = total_inches % 12
-        rounded_remaining_inches = round(remaining_inches, 2)
+        
+        # Round remaining_inches to the nearest whole number
+        rounded_remaining_inches = int(round(remaining_inches))
+        
+        # Handle carry-over if inches round up to 12
+        if rounded_remaining_inches >= 12: # If it rounds to 12, it means a full foot
+            feet += 1
+            rounded_remaining_inches = 0
+
         if to_unit == 'Feet':
-            if rounded_remaining_inches >= 11.99:
-                return f"{feet + 1}'0\""
             return f"{feet}'{rounded_remaining_inches}\""
         elif to_unit == 'Inches':
-            return f"{round(total_inches, 2)}\""
+            return f"{round(total_inches, 2)}\"" # Keep 2 decimals for total inches if specifically asked for inches
     return f"{total_value_in_meters:.4f}"
 
 def convert_weight(value, from_unit, to_unit):
@@ -296,7 +303,7 @@ def perform_conversion_and_record(input_value, selected_unit_type, from_unit, to
             formatted_result = f"{converted_value:.2f}"
     else:
         # All other unit types (Length, Weight, Temperature, Volume) get 4 decimal places
-        formatted_result = f"{converted_value:.4f}" # CHANGED back to 4 decimal places here
+        formatted_result = f"{converted_value:.4f}"
 
     # Construct the full result string for display in the UI
     final_result_string = f"{input_value} {t['units'][from_unit]} = {formatted_result} {t['units'][to_unit]}"
